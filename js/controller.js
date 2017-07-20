@@ -1,20 +1,23 @@
 app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMaker', 'LineChartService', function($scope, $timeout, AgeCalculator, PdfMaker, LineChartService) {
+
+  $scope.infoShow = function(value) {
+      if (value) {
+          document.getElementsByClassName("information-overlay")[0].style.visibility = "visible";
+          document.getElementsByClassName("information-overlay")[0].style.zIndex = "9999";
+          document.getElementsByClassName("information-overlay")[0].style.position = "inline-block";
+          document.getElementsByClassName("information-overlay")[0].style.height = "" + (document.getElementsByClassName("otrp-calculator")[0].clientHeight - 10) + "px";
+      } else {
+          document.getElementsByClassName("information-overlay")[0].style.visibility = "hidden";
+      }
+  }
+
   /**
     String.prototype.replaceAll = function(search, replacement) {
         var target = this;
         return target.split(search).join(replacement);
     };
 
-    $scope.infoShow = function(value) {
-        if (value) {
-            document.getElementsByClassName("information-overlay")[0].style.visibility = "visible";
-            document.getElementsByClassName("information-overlay")[0].style.zIndex = "9999";
-            document.getElementsByClassName("information-overlay")[0].style.position = "inline-block";
-            document.getElementsByClassName("information-overlay")[0].style.height = "" + (document.getElementsByClassName("otrp-calculator")[0].clientHeight - 10) + "px";
-        } else {
-            document.getElementsByClassName("information-overlay")[0].style.visibility = "hidden";
-        }
-    }
+
 
     $scope.personalDetails = {};
     $scope.forms = {};
@@ -60,6 +63,7 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
             $scope.australianBonds2 + $scope.internationalBondsHedged2 +
             $scope.cash2 + $scope.australianListedProperty2 +
             $scope.internationalListedProperty2+"%";
+            */
 
     var initDate = new Date();
     initDate.setYear(1989);
@@ -156,9 +160,9 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
 
     $scope.age = AgeCalculator.getAge($scope.dob, $scope.fy);
 
-    **/
 
-    /*
+
+
     $scope.ageChange = function() {
         var dobText = document.getElementById("dobText");
         // console.log("dobText",new Date(dobText.value));
@@ -177,20 +181,9 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
         $scope.age = AgeCalculator.getAge($scope.dob, $scope.fy);
         // calculateFinal();
 
-        // $scope.compYear = new Date().getFullYear();
-        $scope.compYear = 2016;
-        //$scope.maxInvstmntHorzn = $scope.compYear - 1991 + 1;
-        //$scope.invstmntHorzn = Math.min($scope.maxInvstmntHorzn, $scope.age - 18);
-        $scope.begngInvstmntPrd = Math.max(1991,$scope.dob.getFullYear()+18);
-        $scope.invstmntHorzn=$scope.compYear-$scope.begngInvstmntPrd;
-        alterYearSlider.noUiSlider.updateOptions({
-            range: {
-                'min': 0,
-                'max': [$scope.invstmntHorzn]
-            },
-        });
-    }
 
+    }
+/*
     // $scope.compYear = new Date().getFullYear();
         $scope.compYear = 2016;
     $scope.begngInvstmntPrd = Math.max(1991,$scope.dob.getFullYear()+18);
@@ -1164,40 +1157,115 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     };
     **/
 
+    String.prototype.replaceAll = function(search, replacement) {
+            var target = this;
+            return target.split(search).join(replacement);
+        };
+
 
     $scope.loan_term = 20,
     $scope.Inflation = 2.50,
     $scope.member1Age = 40,
     $scope.YourAnnualTaxableIncome = 127892.014851933,
-    $scope.taxOnIncome = 31694.7204952153 ,
+    $scope.lowerBond = [0, 18201, 37001 ,80001 , 180001],
+    $scope.taxRate = [0, 0.19, 0.325, 0.37, 0.45 ];
+  //  $scope.taxOnIncome = taxBase($scope.YourAnnualTaxableIncome)+($scope.YourAnnualTaxableIncome-$scope.lowerBond[3]+1)*$scope.taxRate[3],  // =VLOOKUP(B3,$H$2:$K$7,4,1)+(B3-VLOOKUP(B3,$H$2:$K$7,1,1)+1)*VLOOKUP(B3,$H$2:$K$7,3,1)
     $scope.netAnnualIncomeAfterTax = $scope.YourAnnualTaxableIncome - $scope.taxOnIncome,
     $scope.SalaryExcludeTaxAndSuperPerYearMember1= 120000,
     $scope.member2Age = 35,
     $scope.SalaryExcludeTaxAndSuperPerYearMember2 = 80000,
-    $scope.InvestmentncomePerYear = 10000,
+    $scope.InvestmentIncomePerYear = 10000,
     $scope.RentalIncomeInvestmentPropertyPerWeek = 550,
     $scope.OtherIncomePerYear = 10000,
-    $scope.AreYouSingleOrCouple = "Single",
-    $scope.NumberOfDependents = 2,
+    $scope.AreYouSingleOrCouple = "Couple",
+    $scope.NumberOfDependents = "2",
     $scope.CreditCardOutstandingBalance = 10000,
     $scope.DoYouHaveAnExistingLoan = "Yes",
     $scope.CurrentLoanBalance = 200000,
     $scope.CurrentInterestRatePerYear = 6,
     $scope.RemainingLoanTermYears = 10,
-    $scope.InterestRate049 = Math.pow(1+$scope.CurrentInterestRatePerYear, 1/12)-1,
-    $scope.ProjectedMonthlyRepayment = $scope.CurrentLoanBalance/((1-Math.pow(1+$scope.InterestRate049, -$scope.RemainingLoanTermYears*12))/$scope.InterestRate049),
+    $scope.InterestRate049 = Math.pow(1+$scope.CurrentInterestRatePerYear/100, (1/12))-1 , //(1+H8)^(1/12)-1
+    $scope.ProjectedMonthlyRepayment = $scope.CurrentLoanBalance/((1-Math.pow(1+$scope.InterestRate049,-$scope.RemainingLoanTermYears*12))/$scope.InterestRate049),
     $scope.DoYouHaveMoreLoan = "No",
     $scope.CurrentLoanBalanceInMoreLoan = 300000,
     $scope.CurrentInterestRatePerYearInMoreLoan = 7,
     $scope.RemainingLoanTermYearsInMoreLoan = 15,
     $scope.InterestRate057 = Math.pow(1+$scope.CurrentInterestRatePerYearInMoreLoan, 1/12) - 1;
     $scope.ProjectedMonthlyRepaymentInMoreLoan = $scope.CurrentLoanBalanceInMoreLoan/((1-Math.pow(1+$scope.InterestRate057, -$scope.RemainingLoanTermYearsInMoreLoan*12))/$scope.InterestRate057),
-    $scope.GenderOfMember1 = "Female",
+    $scope.GenderOfMember1 = "Male",
     $scope.GenderOfMember2 = "Female",
-    $scope.EstimatedInterestRate = 7,
-    $scope.loanTermInYears = 20;
+    $scope.EstimatedInterestRate = 7;
+
+    $scope.personalDetails = {
+        firstName: "Dexter",
+        lastName: "Payne",
+        email: "dexter@gmail.com",
+        mobile: 412121212,
+        postalCode: 1234
+    };
+
+    //alert($scope.ProjectedMonthlyRepayment)
+
+    var lowerBondArray = [0, 18201, 37001 ,80001 , 180001], //H
+        upperBondArray = [18200,37000,80000,180000,"Above"], //I
+        taxRateArray = [0, 0.19, 0.325, 0.37, 0.45 ], // j
+        taxBaseArray = [0, 0, (upperBondArray[1]-lowerBondArray[1])*taxRateArray[1] , (upperBondArray[2]-lowerBondArray[2])*taxRateArray[2], (upperBondArray[3]-lowerBondArray[3])*taxRateArray[3]];
+
+    //alert($scope.taxOnIncome)
+    function taxBase(getValue){
 
 
+          if(getValue>=0 && getValue<=18200){
+            return 0;
+          }else if(getValue>=18201 && getValue<=37000){
+            return 1;
+          }else if(getValue>=37001 && getValue<=80000){
+            return 2;
+          }else if(getValue>=80001 && getValue<=180000){
+            return 3;
+          }else if(getValue>=180001){
+            return 4;
+          }
+    }
+
+    $scope.marriedStatusOption = true;
+    $scope.genderMmbr1 = false; //false for male
+    $scope.genderMmbr2 = true; //true for female
+
+    $scope.getGenderOfMember1 = function(gender){
+      $scope.genderMmbr1 = gender;
+
+      if(gender == true){
+        $scope.GenderOfMember1 = "Female"
+      }else{
+        $scope.GenderOfMember1 = "Male"
+      }
+
+      //console.log($scope.genderMmbr1)
+    }
+
+    $scope.getGenderOfMember2 = function(gender){
+      $scope.genderMmbr2 = gender;
+      if(gender == true){
+        $scope.GenderOfMember2 = "Female"
+      }else{
+        $scope.GenderOfMember2 = "Male"
+      }
+      //console.log($scope.GenderOfMember2)
+    }
+
+    $scope.marriedStatus = function(getstatus){
+      $scope.marriedStatusOption = getstatus;
+      if($scope.marriedStatusOption == true){
+          $scope.AreYouSingleOrCouple = "Couple";
+          console.log($scope.AreYouSingleOrCouple, getstatus)
+
+      }else{
+        $scope.AreYouSingleOrCouple = "Single";
+        console.log($scope.AreYouSingleOrCouple, getstatus)
+      }
+
+    }
 
 
     //all blank value array
@@ -1266,7 +1334,9 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
 
     $scope.maleTableCondtionalSurvivalProb =  [1],
 
-    $scope.maleTablePx05 = [];
+    $scope.maleTablePx05 = [],
+    $scope.existinLoanOption = true,
+    $scope.moreLoanOption = true;
 
 
 
@@ -1330,189 +1400,21 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     $scope.cashOutflow = [];
     $scope.surplus = [];
     $scope.discountRate = [];
-
-    //for loop for 109 values;
-    for(var j=0; j<109; j++){
-      $scope.femaleTableCondtionalSurvivalProb[j+1] =  $scope.femaleTableCondtionalSurvivalProb[j]*$scope.femaleTablePXColomn[j];
-      $scope.femaleTablePx05[j] = $scope.femaleTableCondtionalSurvivalProb[j]*(1-$scope.femaleTableQXColomn[j]/2);
-      $scope.maleTableCondtionalSurvivalProb[j+1] =  $scope.maleTableCondtionalSurvivalProb[j]*$scope.maleTablePXColomn[j];
-      $scope.maleTablePx05[j] = $scope.maleTableCondtionalSurvivalProb[j]*(1-$scope.maleTableQXColomn[j]/2);
-    }
-
-    //console.log($scope.maleTablePx05[40])
-    //console.log($scope.maleTablePx05)
-
-    for(i=0; i<=$scope.loan_term; i++){
-        //year
-        $scope.year[i] = i+1;
-
-        //Inflation
-        $scope.InflationAry[i] = Math.pow((1+$scope.Inflation), (i+1-1));
-
-        //member 1 age
-        $scope.member1AgeAry[i] = ($scope.member1Age + i+1) - 1;
-
-        //member 1 gross sallary and member 1 after tax sallary
-        if($scope.member1AgeAry[i]>65){
-          //console.log('retirement age assumed to be 65');
-          $scope.grossSalleryMember1Ary[i] = 0;
-          $scope.afterTaxSallaryMember1Ary[i] = 0;
-        }else{
-          $scope.YourAnnualTaxableIncome = $scope.SalaryExcludeTaxAndSuperPerYearMember1;
-          $scope.grossSalleryMember1Ary[i] = $scope.YourAnnualTaxableIncome;
-          $scope.afterTaxSallaryMember1Ary[i] = $scope.netAnnualIncomeAfterTax;
-        }
-
-        //member 2 age
-        $scope.member2AgeAry[i] = ($scope.member2Age+i+1)-1;
-
-        //member 2 gross sallary and member 2 after tax sallary
-        if($scope.member2AgeAry[i]>65){
-          //console.log('retirement age in member 2');
-          $scope.grossSalleryMember2Ary[i] = 0,
-          $scope.afterTaxSallaryMember2Ary[i] = 0;
-        }else{
-          $scope.YourAnnualTaxableIncome = ($scope.SalaryExcludeTaxAndSuperPerYearMember2+i+1)-1
-          $scope.grossSalleryMember2Ary[i] = $scope.YourAnnualTaxableIncome;
-          $scope.afterTaxSallaryMember2Ary[i] = $scope.netAnnualIncomeAfterTax;
-        }
-
-        //Investment income
-        $scope.InvestmentIncome[i] = $scope.InvestmentIncomePerYear*$scope.InflationAry[i];
-
-        //Rental income
-        $scope.RentalIncome[i] = $scope.RentalIncomeInvestmentPropertyPerWeek*52*$scope.InflationAry[i];
-
-        //Other income
-        $scope.otherIncome[i] = $scope.OtherIncomePerYear*$scope.InflationAry[i];
-
-        //more conditions
-        if($scope.AreYouSingleOrCouple == "Single"){
-          $scope.EstimatedLivingCost[i] = $scope.ExpensesForSingleAdultsArray[$scope.NumberOfDependents].hem * $scope.InflationAry[i]*52;
-        }else{
-          $scope.EstimatedLivingCost[i] = $scope.ExpensesForCoupleArray[$scope.NumberOfDependents].hem * $scope.InflationAry[i]*52;
-        }
-
-        //Credit card liability
-        $scope.CreditCardLiability[i] = $scope.CreditCardOutstandingBalance *12;
-
-        //loan 1 reypayment
-        if($scope.DoYouHaveAnExistingLoan == "Yes"){
-          $scope.Loan1Repayment[i] = $scope.ProjectedMonthlyRepayment*12;
-        }else{
-          $scope.Loan1Repayment[i] = 0;
-        }
-
-        //loan 2 reypayment
-        if($scope.DoYouHaveMoreLoan == "Yes"){
-          $scope.Loan2Repayment[i] = $scope.ProjectedMonthlyRepaymentInMoreLoan*12;
-        }else{
-          $scope.Loan2Repayment[i] = 0;
-        }
-
-        //Remaining balance
-        $scope.RemainingBalance[i] = $scope.afterTaxSallaryMember1Ary[i]+$scope.afterTaxSallaryMember2Ary[i]+$scope.InvestmentIncome[i]+$scope.RentalIncome[i]+$scope.otherIncome[i]-$scope.EstimatedLivingCost[i]-$scope.CreditCardLiability[i]-$scope.Loan1Repayment[i]-$scope.Loan2Repayment[i];
-
-        //after Tax Sallary Member 1 Expected Cash flow Year
-        if($scope.GenderOfMember1 == "Female"){
-          var finalVal1 = $scope.femaleTablePx05[40+i]; //female life table k42
-
-        }else{
-          var finalVal1 = $scope.maleTablePx05[40+i]; //male life table k42
-        }
-
-        if($scope.GenderOfMember1 == "Female"){
-          var finalVal2 = $scope.femaleTablePx05[40+i]; //female life table k42
-
-        }else{
-          var finalVal2 = $scope.maleTablePx05[40+i]; //male life table k42
-        }
-
-        $scope.afterTaxSallaryMember1AryExpectedCashYear[i] = $scope.afterTaxSallaryMember1Ary[i]*(finalVal1/finalVal2);
-        /*
-        G4*IF(
-        $Calculation.$B$12="Female",
-        VLOOKUP($Projection.E4,$'Female life table'.$A$2:$K$111,11,0),
-        VLOOKUP($Projection.E4,$'Male life table'.$A$2:$K$111,11,0)
-          )/IF(
-          $Calculation.$B$12="Female",
-          VLOOKUP($Projection.$E$4,$'Female life table'.$A$2:$K$111,11,0),
-          VLOOKUP($Projection.$E$4,$'Male life table'.$A$2:$K$111,11,0)
-        )
-        */
+    $scope.NetNPVArray = [];
 
 
-        //after Tax Sallary Member 2 Expected Cash flow Year
-        if($scope.GenderOfMember2 == "Female"){
-          var finalVal3 = $scope.femaleTablePx05[35+i]//k37
-        }else{
-          var finalVal3 = $scope.maleTablePx05[35+i]; //k37
-        }
 
-        if($scope.GenderOfMember2 == "Female"){
-          var finalVal4 = $scope.femaleTablePx05[35+i]//k37
-        }else{
-          var finalVal4 = $scope.maleTablePx05[35+i]; //k37
-        }
-
-        $scope.afterTaxSallaryMember2AryExpectedCashYear[i] = $scope.afterTaxSallaryMember2Ary[i]*(finalVal3/finalVal4);
-
-        /*
-        =J4*IF(
-        $Calculation.$B$13="Female",
-        VLOOKUP($Projection.H4,$'Female life table'.$A$2:$K$111,11,0),
-        VLOOKUP($Projection.H4,$'Male life table'.$A$2:$K$111,11,0)
-        )/IF(
-        $Calculation.$B$13="Female",
-        VLOOKUP($Projection.$H$4,$'Female life table'.$A$2:$K$111,11,0),
-        VLOOKUP($Projection.$H$4,$'Male life table'.$A$2:$K$111,11,0)
-        )
-        */
-
-        //Remaining balance 2
-        $scope.RemainingBalance2[i] = $scope.afterTaxSallaryMember1AryExpectedCashYear[i]+$scope.afterTaxSallaryMember2AryExpectedCashYear[i]+($scope.InvestmentIncome[i]+$scope.otherIncome[i])-($scope.EstimatedLivingCost[i]+$scope.Loan2Repayment[i]);
-
-        //output year
-        $scope.outputYear[i] = (i+1);
-
-        //cash inflow
-        $scope.cashInflow[i] = $scope.afterTaxSallaryMember1AryExpectedCashYear[i]+$scope.afterTaxSallaryMember2AryExpectedCashYear[i]+($scope.InvestmentIncome[i]+$scope.otherIncome[i]);
-
-        //cash outflow
-        $scope.cashOutflow[i] = $scope.EstimatedLivingCost[i]+$scope.Loan2Repayment[i];
-
-        //Surplus/Deficit
-        $scope.surplus[i] = ($scope.cashInflow[i] - $scope.cashOutflow[i]);
-
-        //Discount Rate
-        if($scope.outputYear[i]==0){
-          $scope.discountRate[i] = 0;
-        }else{
-          $scope.discountRate[i] = Math.pow(1+$scope.EstimatedInterestRate, -($scope.outputYear[i]-0.5));
-        }
-
-    };
-
-    $scope.outputYear.pop();
-    $scope.cashInflow.pop();
-    $scope.cashOutflow.pop();
-    $scope.surplus.pop();
-    $scope.discountRate.pop();
-
-    $scope.NetNPV = ($scope.surplus[0]*$scope.discountRate[0])+($scope.surplus[$scope.surplus.length-1]*$scope.discountRate[$scope.discountRate.length-1])//SUMPRODUCT($D$6:$D$154,$E$6:$E$154)
-
-
-    /**********************************
-          slider range and input
-    ***********************************/
+/***********************************************************
+             slider range and input
+************************************************************/
     var initialInvestmentAmountNewSlider = document.getElementById("initialInvestmentAmountNewSlider");
     var initialInvestmentAmountNewInput = document.getElementById("initialInvestmentAmountNewInput");
-    $scope.initialInvestmentAmountNew=$scope.member1Age;
+    //$scope.initialInvestmentAmountNew=$scope.member1Age;
     noUiSlider.create(initialInvestmentAmountNewSlider, {
-        start: $scope.initialInvestmentAmountNew,
+        start: $scope.member1Age,
         range: {
             min: [1],
-            max: [200]
+            max: [100]
         },
         format: wNumb({
             decimals: 0,
@@ -1523,52 +1425,27 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
 
     initialInvestmentAmountNewSlider.noUiSlider.on('update', function(values, handle) {
         initialInvestmentAmountNewInput.value = values[handle];
-        $scope.initialInvestmentAmountNew = values[handle];
+        $scope.member1Age = values[handle];
+    });
+    initialInvestmentAmountNewSlider.noUiSlider.on('set', function(values, handle) {
+        initialInvestmentAmountNewInput.value = values[handle];
+        $scope.member1Age = values[handle];
     });
 
     initialInvestmentAmountNewInput.addEventListener("change", function() {
         initialInvestmentAmountNewSlider.noUiSlider.set(initialInvestmentAmountNewInput.value);
     });
 
-    /*
-    var myslider = document.getElementById("myslider");
-    var myInput = document.getElementById("myInput");
-    $scope.intialVal=10000;
-    noUiSlider.create(myslider, {
-        start: $scope.intialVal,
-        range: {
-            min: [1000],
-            max: [1000000]
-        },
-        step: 500,
-        format: wNumb({
-            decimals: 0,
-            prefix: '$',
-            thousand: ','
-        }),
-        connect: 'lower'
-    });
-    myslider.noUiSlider.on('update', function(values, handle) {
-        myInput.value = values[handle];
-        $scope.intialVal = values[handle];
-        //console.log(values, handle)
-    });
-    myInput.addEventListener("change", function() {
-        myslider.noUiSlider.set(myInput.value);
-    });
-    */
-
-
     //slider-2 input-2
     var slider2 = document.getElementById("slider2");
     var input2 = document.getElementById("input2");
 
-    $scope.IntialVal2 =$scope.member2Age;
+    //$scope.IntialVal2 =$scope.member2Age;
     noUiSlider.create(slider2, {
-        start: $scope.IntialVal2,
+        start: $scope.member2Age,
         range: {
             min: [1],
-            max: [200]
+            max: [100]
         },
         format: wNumb({
             decimals: 0,
@@ -1578,26 +1455,29 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     });
     slider2.noUiSlider.on('update', function(values, handle) {
         input2.value = values[handle];
-        $scope.IntialVal2 = values[handle];
-        //console.log(values, handle)
+        $scope.member2Age = values[handle];
+    });
+    slider2.noUiSlider.on('set', function(values, handle) {
+        input2.value = values[handle];
+        $scope.member2Age = values[handle];
     });
     input2.addEventListener("change", function() {
         slider2.noUiSlider.set(input2.value);
     });
 
     //slider-3 input-3
-    var slider2 = document.getElementById("slider3");
-    var input2 = document.getElementById("input3");
+    var slider3 = document.getElementById("slider3");
+    var input3 = document.getElementById("input3");
 
-    $scope.IntialVal3 =$scope.EstimatedInterestRate;
+    //$scope.IntialVal3 =$scope.EstimatedInterestRate;
     noUiSlider.create(slider3, {
-        start: $scope.IntialVal3,
+        start: $scope.EstimatedInterestRate,
         range: {
             min: [0],
             max: [100]
         },
         format: wNumb({
-            decimals: 0,
+            decimals: 2,
             postfix: ' %',
             thousand: ','
         }),
@@ -1605,8 +1485,11 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     });
     slider3.noUiSlider.on('update', function(values, handle) {
         input3.value = values[handle];
-        $scope.IntialVal3 = values[handle];
-        //console.log(values, handle)
+        $scope.EstimatedInterestRate = values[handle];
+    });
+    slider3.noUiSlider.on('set', function(values, handle) {
+        input3.value = values[handle];
+        $scope.EstimatedInterestRate = values[handle];
     });
     input3.addEventListener("change", function() {
         slider3.noUiSlider.set(input3.value);
@@ -1617,15 +1500,15 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     var slider4 = document.getElementById("slider4");
     var input4 = document.getElementById("input4");
 
-    $scope.IntialVal4 =$scope.Inflation;
+    //$scope.IntialVal4 =$scope.Inflation;
     noUiSlider.create(slider4, {
-        start: $scope.IntialVal4,
+        start: $scope.Inflation,
         range: {
             min: [0],
             max: [100]
         },
         format: wNumb({
-            decimals: 0,
+            decimals: 2,
             postfix: ' %',
             thousand: ','
         }),
@@ -1633,8 +1516,11 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     });
     slider4.noUiSlider.on('update', function(values, handle) {
         input4.value = values[handle];
-        $scope.IntialVal4 = values[handle];
-        //console.log(values, handle)
+        $scope.Inflation = values[handle];
+    });
+    slider4.noUiSlider.on('set', function(values, handle) {
+        input4.value = values[handle];
+        $scope.Inflation = values[handle];
     });
     input4.addEventListener("change", function() {
         slider4.noUiSlider.set(input4.value);
@@ -1644,15 +1530,15 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     var slider5 = document.getElementById("slider5");
     var input5 = document.getElementById("input5");
 
-    $scope.IntialVal5 =$scope.SalaryExcludeTaxAndSuperPerYearMember1;
+    //$scope.IntialVal5 =$scope.SalaryExcludeTaxAndSuperPerYearMember1;
     noUiSlider.create(slider5, {
-        start: $scope.IntialVal5,
+        start: $scope.SalaryExcludeTaxAndSuperPerYearMember1,
         range: {
             min: [1000],
             max: [1000000]
         },
         format: wNumb({
-            decimals: 0,
+            decimals: 2,
             prefix: '$',
             thousand: ','
         }),
@@ -1660,7 +1546,11 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     });
     slider5.noUiSlider.on('update', function(values, handle) {
         input5.value = values[handle];
-        $scope.IntialVal5 = values[handle];
+        $scope.SalaryExcludeTaxAndSuperPerYearMember1 = values[handle];
+    });
+    slider5.noUiSlider.on('set', function(values, handle) {
+        input5.value = values[handle];
+        $scope.SalaryExcludeTaxAndSuperPerYearMember1 = values[handle];
     });
     input5.addEventListener("change", function() {
         slider5.noUiSlider.set(input5.value);
@@ -1670,9 +1560,9 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     var slider6 = document.getElementById("slider6");
     var input6 = document.getElementById("input6");
 
-    $scope.IntialVal6 =$scope.SalaryExcludeTaxAndSuperPerYearMember2;
+    //$scope.IntialVal6 =$scope.SalaryExcludeTaxAndSuperPerYearMember2;
     noUiSlider.create(slider6, {
-        start: $scope.IntialVal6,
+        start: $scope.SalaryExcludeTaxAndSuperPerYearMember2,
         range: {
             min: [1000],
             max: [1000000]
@@ -1686,7 +1576,11 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     });
     slider6.noUiSlider.on('update', function(values, handle) {
         input6.value = values[handle];
-        $scope.IntialVal6 = values[handle];
+        $scope.SalaryExcludeTaxAndSuperPerYearMember2 = values[handle];
+    });
+    slider6.noUiSlider.on('set', function(values, handle) {
+        input6.value = values[handle];
+        $scope.SalaryExcludeTaxAndSuperPerYearMember2 = values[handle];
     });
     input6.addEventListener("change", function() {
         slider6.noUiSlider.set(input6.value);
@@ -1697,9 +1591,9 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     var slider7 = document.getElementById("slider7");
     var input7 = document.getElementById("input7");
 
-    $scope.IntialVal7 =$scope.InvestmentncomePerYear;
+    //$scope.IntialVal7 =$scope.InvestmentIncomePerYear;
     noUiSlider.create(slider7, {
-        start: $scope.IntialVal7,
+        start: $scope.InvestmentIncomePerYear,
         range: {
             min: [1000],
             max: [1000000]
@@ -1713,7 +1607,11 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     });
     slider7.noUiSlider.on('update', function(values, handle) {
         input7.value = values[handle];
-        $scope.IntialVal7 = values[handle];
+        $scope.InvestmentIncomePerYear = values[handle];
+    });
+    slider7.noUiSlider.on('set', function(values, handle) {
+        input7.value = values[handle];
+        $scope.InvestmentIncomePerYear = values[handle];
     });
     input7.addEventListener("change", function() {
         slider7.noUiSlider.set(input7.value);
@@ -1723,9 +1621,9 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     var slider8 = document.getElementById("slider8");
     var input8 = document.getElementById("input8");
 
-    $scope.IntialVal8 =$scope.RentalIncomeInvestmentPropertyPerWeek;
+    //$scope.IntialVal8 =$scope.RentalIncomeInvestmentPropertyPerWeek;
     noUiSlider.create(slider8, {
-        start: $scope.IntialVal8,
+        start: $scope.RentalIncomeInvestmentPropertyPerWeek,
         range: {
             min: [10],
             max: [1000000]
@@ -1739,7 +1637,11 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     });
     slider8.noUiSlider.on('update', function(values, handle) {
         input8.value = values[handle];
-        $scope.IntialVal8 = values[handle];
+        $scope.RentalIncomeInvestmentPropertyPerWeek = values[handle];
+    });
+    slider8.noUiSlider.on('set', function(values, handle) {
+        input8.value = values[handle];
+        $scope.RentalIncomeInvestmentPropertyPerWeek = values[handle];
     });
     input8.addEventListener("change", function() {
         slider8.noUiSlider.set(input8.value);
@@ -1749,9 +1651,9 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     var slider9 = document.getElementById("slider9");
     var input9 = document.getElementById("input9");
 
-    $scope.IntialVal9 =$scope.OtherIncomePerYear;
+    //$scope.IntialVal9 =$scope.OtherIncomePerYear;
     noUiSlider.create(slider9, {
-        start: $scope.IntialVal9,
+        start: $scope.OtherIncomePerYear,
         range: {
           min: [1000],
           max: [1000000]
@@ -1765,7 +1667,11 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     });
     slider9.noUiSlider.on('update', function(values, handle) {
         input9.value = values[handle];
-        $scope.IntialVal9 = values[handle];
+        $scope.OtherIncomePerYear = values[handle];
+    });
+    slider9.noUiSlider.on('set', function(values, handle) {
+        input9.value = values[handle];
+        $scope.OtherIncomePerYear = values[handle];
     });
     input9.addEventListener("change", function() {
         slider9.noUiSlider.set(input9.value);
@@ -1777,7 +1683,7 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     var slider10 = document.getElementById("slider10");
     var input10 = document.getElementById("input10");
 
-    $scope.IntialVal10 =$scope.OtherIncomePerYear;
+    //$scope.IntialVal10 =$scope.CurrentLoanBalance;
     noUiSlider.create(slider10, {
         start: $scope.CurrentLoanBalance,
         range: {
@@ -1793,7 +1699,11 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     });
     slider10.noUiSlider.on('update', function(values, handle) {
         input10.value = values[handle];
-        $scope.IntialVal10 = values[handle];
+        $scope.CurrentLoanBalance = values[handle];
+    });
+    slider10.noUiSlider.on('set', function(values, handle) {
+        input10.value = values[handle];
+        $scope.CurrentLoanBalance = values[handle];
     });
     input10.addEventListener("change", function() {
         slider10.noUiSlider.set(input10.value);
@@ -1803,15 +1713,15 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     var slider11 = document.getElementById("slider11");
     var input11 = document.getElementById("input11");
 
-    $scope.IntialVal11 =$scope.CurrentInterestRatePerYear;
+    //$scope.IntialVal11 =$scope.CurrentInterestRatePerYear;
     noUiSlider.create(slider11, {
-        start: $scope.IntialVal11,
+        start: $scope.CurrentInterestRatePerYear,
         range: {
           min: [0],
           max: [100]
         },
         format: wNumb({
-            decimals: 0,
+            decimals: 2,
             postfix: '%',
             thousand: ','
         }),
@@ -1822,10 +1732,16 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
 
     slider11.noUiSlider.on('update', function(values, handle) {
         input11.value = values[handle];
-        $scope.IntialVal11 = values[handle];
+        $scope.CurrentInterestRatePerYear = values[handle];
+    });
+    slider11.noUiSlider.on('set', function(values, handle) {
+        input11.value = values[handle];
+        $scope.CurrentInterestRatePerYear = values[handle];
     });
     input11.addEventListener("change", function() {
         slider11.noUiSlider.set(input11.value);
+        $scope.InterestRate057 = Math.pow(1+$scope.CurrentInterestRatePerYearInMoreLoan, 1/12) - 1;
+
     });
 
 
@@ -1833,9 +1749,9 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     var slider12 = document.getElementById("slider12");
     var input12 = document.getElementById("input12");
 
-    $scope.IntialVal12 =$scope.RemainingLoanTermYears;
+    //$scope.IntialVal12 =$scope.RemainingLoanTermYears;
     noUiSlider.create(slider12, {
-        start: $scope.IntialVal12,
+        start: $scope.RemainingLoanTermYears,
         range: {
           min: [0],
           max: [100]
@@ -1851,7 +1767,11 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
 
     slider12.noUiSlider.on('update', function(values, handle) {
         input12.value = values[handle];
-        $scope.IntialVal12 = values[handle];
+        $scope.RemainingLoanTermYears = values[handle];
+    });
+    slider12.noUiSlider.on('set', function(values, handle) {
+        input12.value = values[handle];
+        $scope.RemainingLoanTermYears = values[handle];
     });
     input12.addEventListener("change", function() {
         slider12.noUiSlider.set(input12.value);
@@ -1862,9 +1782,9 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     var slider13 = document.getElementById("slider13");
     var input13 = document.getElementById("input13");
 
-    $scope.IntialVal13 =$scope.CurrentLoanBalanceInMoreLoan;
+    //$scope.IntialVal13 =$scope.CurrentLoanBalanceInMoreLoan;
     noUiSlider.create(slider13, {
-        start: $scope.IntialVal13,
+        start: $scope.CurrentLoanBalanceInMoreLoan,
         range: {
           min: [1000],
           max: [1000000]
@@ -1878,7 +1798,11 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     });
     slider13.noUiSlider.on('update', function(values, handle) {
         input13.value = values[handle];
-        $scope.IntialVal13 = values[handle];
+        $scope.CurrentLoanBalanceInMoreLoan = values[handle];
+    });
+    slider13.noUiSlider.on('set', function(values, handle) {
+        input13.value = values[handle];
+        $scope.CurrentLoanBalanceInMoreLoan = values[handle];
     });
     input13.addEventListener("change", function() {
         slider13.noUiSlider.set(input13.value);
@@ -1888,15 +1812,15 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     var slider14 = document.getElementById("slider14");
     var input14 = document.getElementById("input14");
 
-    $scope.IntialVal14 =$scope.CurrentInterestRatePerYearInMoreLoan;
+    //$scope.IntialVal14 =$scope.CurrentInterestRatePerYearInMoreLoan;
     noUiSlider.create(slider14, {
-        start: $scope.IntialVal14,
+        start: $scope.CurrentInterestRatePerYearInMoreLoan,
         range: {
           min: [0],
           max: [100]
         },
         format: wNumb({
-            decimals: 0,
+            decimals: 2,
             postfix: '%',
             thousand: ','
         }),
@@ -1904,7 +1828,11 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     });
     slider14.noUiSlider.on('update', function(values, handle) {
         input14.value = values[handle];
-        $scope.IntialVal14 = values[handle];
+        $scope.CurrentInterestRatePerYearInMoreLoan = values[handle];
+    });
+    slider14.noUiSlider.on('set', function(values, handle) {
+        input14.value = values[handle];
+        $scope.CurrentInterestRatePerYearInMoreLoan = values[handle];
     });
     input14.addEventListener("change", function() {
         slider14.noUiSlider.set(input14.value);
@@ -1914,9 +1842,9 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     var slider15 = document.getElementById("slider15");
     var input15 = document.getElementById("input15");
 
-    $scope.IntialVal15 =$scope.RemainingLoanTermYearsInMoreLoan;
+    //$scope.IntialVal15 =$scope.RemainingLoanTermYearsInMoreLoan;
     noUiSlider.create(slider15, {
-        start: $scope.IntialVal15,
+        start: $scope.RemainingLoanTermYearsInMoreLoan,
         range: {
           min: [0],
           max: [100]
@@ -1929,7 +1857,11 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     });
     slider15.noUiSlider.on('update', function(values, handle) {
         input15.value = values[handle];
-        $scope.IntialVal15 = values[handle];
+        $scope.RemainingLoanTermYearsInMoreLoan = values[handle];
+    });
+    slider15.noUiSlider.on('set', function(values, handle) {
+        input15.value = values[handle];
+        $scope.RemainingLoanTermYearsInMoreLoan = values[handle];
     });
     input15.addEventListener("change", function() {
         slider15.noUiSlider.set(input15.value);
@@ -1939,9 +1871,9 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     var slider16 = document.getElementById("slider16");
     var input16 = document.getElementById("input16");
 
-    $scope.IntialVal16 =$scope.CreditCardOutstandingBalance;
+    //$scope.IntialVal16 =$scope.CreditCardOutstandingBalance;
     noUiSlider.create(slider16, {
-        start: $scope.IntialVal16,
+        start: $scope.CreditCardOutstandingBalance,
         range: {
           min: [1000],
           max: [1000000]
@@ -1955,59 +1887,375 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     });
     slider16.noUiSlider.on('update', function(values, handle) {
         input16.value = values[handle];
-        $scope.IntialVal16 = values[handle];
+        $scope.CreditCardOutstandingBalance = values[handle];
+    });
+    slider16.noUiSlider.on('set', function(values, handle) {
+        input16.value = values[handle];
+        $scope.CreditCardOutstandingBalance = values[handle];
     });
     input16.addEventListener("change", function() {
         slider16.noUiSlider.set(input16.value);
     });
-/**
-    //slider-17 input-17
-    var slider17 = document.getElementById("slider17");
-    var input17 = document.getElementById("input17");
 
-    $scope.IntialVal17 =$scope.OtherIncomePerYear;
-    noUiSlider.create(slide17, {
-        start: $scope.IntialVal17,
+
+
+    //slider-18 input-18
+    var slider18 = document.getElementById("slider18");
+    var input18 = document.getElementById("input18");
+
+    //$scope.IntialVal18 =$scope.NumberOfDependents;
+    noUiSlider.create(slider18, {
+        start: $scope.NumberOfDependents,
         range: {
-          min: [1000],
-          max: [1000000]
+          min: [0],
+          max: [3]
         },
         format: wNumb({
             decimals: 0,
-            prefix: '$',
             thousand: ','
         }),
         connect: 'lower'
     });
-    slider17.noUiSlider.on('update', function(values, handle) {
-        input17.value = values[handle];
-        $scope.IntialVal17 = values[handle];
+    slider18.noUiSlider.on('update', function(values, handle) {
+        input18.value = values[handle];
+        $scope.NumberOfDependents = values[handle];
     });
-    input17.addEventListener("change", function() {
-        slider17.noUiSlider.set(input17.value);
+    slider18.noUiSlider.on('set', function(values, handle) {
+        input18.value = values[handle];
+        $scope.NumberOfDependents = values[handle];
     });
-    **/
+    input18.addEventListener("change", function() {
+        slider18.noUiSlider.set(input18.value);
+    });
+
+    //slider-19 input-19
+    var slider19 = document.getElementById("slider19");
+    var input19 = document.getElementById("input19");
+
+    //$scope.IntialVal19 =$scope.loan_term;
+    noUiSlider.create(slider19, {
+        start: $scope.loan_term,
+        step: 10,
+        range: {
+          min: [10],
+          max: [30]
+        },
+        format: wNumb({
+            decimals: 0,
+            thousand: ','
+        }),
+        connect: 'lower'
+    });
+    slider19.noUiSlider.on('update', function(values, handle) {
+        input19.value = values[handle];
+        $scope.loan_term = values[handle];
+    });
+    slider19.noUiSlider.on('set', function(values, handle) {
+        input19.value = values[handle];
+        $scope.loan_term = values[handle];
+    });
+    input19.addEventListener("change", function() {
+        slider19.noUiSlider.set(input19.value);
+    });
+
+    // check Do you have an existing loan?
+
+    $scope.haveYouExistingLoan = function(userAns){
+
+      $scope.existinLoanOption = userAns;
+
+    }
+
+    //check Do you have more loan?
+    //$scope.moreLoanOption
+    $scope.haveYouMoreLoan = function(userAns){
+      $scope.moreLoanOption = userAns;
+      console.log($scope.moreLoanOption)
+    }
+
+
+    $scope.calculateFinal=function(isValid){
+
+      if (isValid) {
+        var EstimatedInterestRate = $scope.EstimatedInterestRate.replaceAll('%', '');
+        var Inflation = $scope.Inflation.replaceAll('%', '');
+        var member1Age = $scope.member1Age.replaceAll('%', '');
+        var SalaryExcludeTaxAndSuperPerYearMember1 = $scope.SalaryExcludeTaxAndSuperPerYearMember1.replaceAll('$', '').replaceAll(',', '');
+        var SalaryExcludeTaxAndSuperPerYearMember2 = $scope.SalaryExcludeTaxAndSuperPerYearMember2.replaceAll('$', '').replaceAll(',', '');
+        var InvestmentIncomePerYear = $scope.InvestmentIncomePerYear.replaceAll('$', '').replaceAll(',', '');
+        var RentalIncomeInvestmentPropertyPerWeek = $scope.RentalIncomeInvestmentPropertyPerWeek.replaceAll('$', '').replaceAll(',', '');
+        var OtherIncomePerYear = $scope.OtherIncomePerYear.replaceAll('$', '').replaceAll(',', '');
+        var CreditCardOutstandingBalance = $scope.CreditCardOutstandingBalance.replaceAll('$', '').replaceAll(',', '');
+
+
+         //for loop for 109 values;
+         for(var j=0; j<=109; j++){
+           $scope.femaleTableCondtionalSurvivalProb[j+1] =  $scope.femaleTableCondtionalSurvivalProb[j]*$scope.femaleTablePXColomn[j];//true
+           //J14*(1-E14/2)
+           $scope.femaleTablePx05[j] = $scope.femaleTableCondtionalSurvivalProb[j]*(1-$scope.femaleTableQXColomn[j]/2); //true
+           $scope.maleTableCondtionalSurvivalProb[j+1] =  $scope.maleTableCondtionalSurvivalProb[j]*$scope.maleTablePXColomn[j];//true
+           $scope.maleTablePx05[j] = $scope.maleTableCondtionalSurvivalProb[j]*(1-$scope.maleTableQXColomn[j]/2);
+         }
+
+         $scope.maleTableCondtionalSurvivalProb.pop();
+         $scope.femaleTableCondtionalSurvivalProb.pop();
+
+         for(i=0; i<$scope.loan_term; i++){
+             //year
+             $scope.year[i] = i+1;
+
+             //Inflation
+             $scope.InflationAry[i] = Math.pow((1+(Inflation/100)), (i+1-1));
+
+             //member 1 age
+             $scope.member1AgeAry[i] = (Number(member1Age) + i+1) - 1;
+
+             //member 1 gross sallary and member 1 after tax sallary
+             if($scope.member1AgeAry[i]>65){
+               //console.log('retirement age assumed to be 65');
+               $scope.grossSalleryMember1Ary[i] = 0;
+               $scope.afterTaxSallaryMember1Ary[i] = 0;
+             }else{
+               $scope.YourAnnualTaxableIncome = Math.ceil(SalaryExcludeTaxAndSuperPerYearMember1*$scope.InflationAry[i]);
+               $scope.taxOnIncome = taxBaseArray[taxBase($scope.YourAnnualTaxableIncome)]+($scope.YourAnnualTaxableIncome-lowerBondArray[taxBase($scope.YourAnnualTaxableIncome)]+1)*taxRateArray[taxBase($scope.YourAnnualTaxableIncome)];
+               $scope.grossSalleryMember1Ary[i] = $scope.YourAnnualTaxableIncome;
+               $scope.afterTaxSallaryMember1Ary[i] = $scope.YourAnnualTaxableIncome - $scope.taxOnIncome ; //$scope.YourAnnualTaxableIncome-(=VLOOKUP(B3,$H$2:$K$7,4,1)+(B3-VLOOKUP(B3,$H$2:$K$7,1,1)+1)*VLOOKUP(B3,$H$2:$K$7,3,1))
+             }
+
+             //member 2 age
+             $scope.member2AgeAry[i] = (Number($scope.member2Age)+i+1)-1;
+
+             //member 2 gross sallary and member 2 after tax sallary
+             if($scope.member2AgeAry[i]>65){
+               //console.log('retirement age in member 2');
+               $scope.grossSalleryMember2Ary[i] = 0,
+               $scope.afterTaxSallaryMember2Ary[i] = 0;
+             }else{
+               $scope.YourAnnualTaxableIncome = SalaryExcludeTaxAndSuperPerYearMember2*$scope.InflationAry[i];
+               $scope.grossSalleryMember2Ary[i] = $scope.YourAnnualTaxableIncome;
+
+               $scope.taxOnIncome = taxBaseArray[taxBase($scope.YourAnnualTaxableIncome)]+($scope.YourAnnualTaxableIncome-lowerBondArray[taxBase($scope.YourAnnualTaxableIncome)]+1)*taxRateArray[taxBase($scope.YourAnnualTaxableIncome)];
+               $scope.afterTaxSallaryMember2Ary[i] = $scope.YourAnnualTaxableIncome - $scope.taxOnIncome ;
+             }
+
+             //Investment income
+             $scope.InvestmentIncome[i] = InvestmentIncomePerYear*$scope.InflationAry[i];
+
+             //Rental income
+             $scope.RentalIncome[i] = RentalIncomeInvestmentPropertyPerWeek*52*$scope.InflationAry[i];
+
+             //Other income
+             $scope.otherIncome[i] = OtherIncomePerYear*$scope.InflationAry[i];
+
+             //EstimatedLivingCost
+             if($scope.AreYouSingleOrCouple == "Single"){
+               //Cells(3 + n, 14) = WorksheetFunction.VLookup(no_dep, ws4.Range("b4:d7"), 3, False) * Cells(3 + n, 4) * 52
+               //console.log($scope.ExpensesForCoupleArray[$scope.NumberOfDependents].hem)
+               $scope.EstimatedLivingCost[i] = $scope.ExpensesForSingleAdultsArray[$scope.NumberOfDependents].hem * $scope.InflationAry[i]*52;
+             }else{
+               //Cells(3 + n, 14) = WorksheetFunction.VLookup(no_dep, ws4.Range("h4:j7"), 3, False) * Cells(3 + n, 4) * 52
+               $scope.EstimatedLivingCost[i] = $scope.ExpensesForCoupleArray[$scope.NumberOfDependents].hem * $scope.InflationAry[i]*52;
+             }
+
+             //Credit card liability
+             $scope.CreditCardLiability[i] = Number(CreditCardOutstandingBalance);
+
+             //loan 1 reypayment
+             if($scope.DoYouHaveAnExistingLoan == "Yes"){
+               $scope.Loan1Repayment[i] = $scope.ProjectedMonthlyRepayment*12;
+             }else{
+               $scope.Loan1Repayment[i] = 0;
+             }
+
+             //loan 2 reypayment
+             if($scope.DoYouHaveMoreLoan == "Yes"){
+               $scope.Loan2Repayment[i] = $scope.ProjectedMonthlyRepaymentInMoreLoan*12;
+             }else{
+               $scope.Loan2Repayment[i] = 0;
+             }
+
+             //Remaining balance
+             $scope.RemainingBalance[i] = $scope.afterTaxSallaryMember1Ary[i]+$scope.afterTaxSallaryMember2Ary[i]+$scope.InvestmentIncome[i]+$scope.RentalIncome[i]+$scope.otherIncome[i]-$scope.EstimatedLivingCost[i]-$scope.CreditCardLiability[i]-$scope.Loan1Repayment[i]-$scope.Loan2Repayment[i];
+
+
+
+             //after Tax Sallary Member 1 Expected Cash flow Year
+             if($scope.GenderOfMember1 == "Female"){
+               //VLOOKUP($Projection.E4,$'Female life table'.$A$2:$K$111,11,0),
+               var finalVal1 = $scope.femaleTablePx05[$scope.member1AgeAry[i]];//female life table k42
+
+             }else{
+               //VLOOKUP($Projection.E4,$'Male life table'.$A$2:$K$111,11,0)
+               var finalVal1 = $scope.maleTablePx05[$scope.member1AgeAry[i]];//male life table k42
+             }
+
+             if($scope.GenderOfMember1 == "Female"){
+               var finalVal2 = $scope.femaleTablePx05[$scope.member1AgeAry[0]]; //female life table k42
+
+             }else{
+               var finalVal2 = $scope.maleTablePx05[$scope.member1AgeAry[0]]; //male life table k42
+             }
+
+             $scope.afterTaxSallaryMember1AryExpectedCashYear[i] = $scope.afterTaxSallaryMember1Ary[i]*(finalVal1/finalVal2);
+
+
+
+             //after Tax Sallary Member 2 Expected Cash flow Year
+             if($scope.GenderOfMember2 == "Female"){
+               var finalVal3 = $scope.femaleTablePx05[$scope.member2AgeAry[i]]//k37
+             }else{
+               var finalVal3 = $scope.maleTablePx05[$scope.member2AgeAry[i]]; //k37
+             }
+
+             if($scope.GenderOfMember2 == "Female"){
+               var finalVal4 = $scope.femaleTablePx05[$scope.member2AgeAry[0]]//k37
+             }else{
+               var finalVal4 = $scope.maleTablePx05[$scope.member2AgeAry[0]]; //k37
+             }
+
+             $scope.afterTaxSallaryMember2AryExpectedCashYear[i] = $scope.afterTaxSallaryMember2Ary[i]*(finalVal3/finalVal4);
+
+             //Remaining balance 2
+                                                                                                                                                                 //X4+AA4+SUM(AB4:AD4)-SUM(AE4:AH4)
+                                                                                                                                                                 //=X8+AA8+SUM(AB8:AD8)-SUM(AE8:AH8)
+        //153678.515+SUM(10000:10000)-SUM(140608:0)  =25216.745
+             $scope.RemainingBalance2[i] = $scope.afterTaxSallaryMember1AryExpectedCashYear[i]+$scope.afterTaxSallaryMember2AryExpectedCashYear[i]+($scope.InvestmentIncome[i]+$scope.RentalIncome[i]+$scope.otherIncome[i])-($scope.EstimatedLivingCost[i]+$scope.CreditCardLiability[i]+$scope.Loan1Repayment[i]+$scope.Loan2Repayment[i]);
+
+             //output year
+             $scope.outputYear[i] = (i+1);
+
+             //cash inflow
+             $scope.cashInflow[i] = $scope.afterTaxSallaryMember1AryExpectedCashYear[i]+$scope.afterTaxSallaryMember2AryExpectedCashYear[i]+($scope.InvestmentIncome[i]+$scope.RentalIncome[i]+$scope.otherIncome[i]);
+
+             //cash outflow
+             $scope.cashOutflow[i] = $scope.EstimatedLivingCost[i]+$scope.CreditCardLiability[i]+$scope.Loan1Repayment[i]+$scope.Loan2Repayment[i];
+
+             //Surplus/Deficit
+             $scope.surplus[i] = ($scope.cashInflow[i] - $scope.cashOutflow[i]);
+
+             //Discount Rate
+             if($scope.outputYear[i]==0){
+               $scope.discountRate[i] = 0;
+             }else{
+               $scope.discountRate[i] = Math.pow(1+EstimatedInterestRate/100, -($scope.outputYear[i]-0.5));
+             }
+
+             //net NPV;
+
+             $scope.NetNPVArray[i] = $scope.surplus[i]*$scope.discountRate[i];
+
+
+         };
 
 
 
 
+         //$scope.NetNPV = ($scope.surplus[0]*$scope.discountRate[0])+($scope.surplus[$scope.surplus.length-1]*$scope.discountRate[$scope.discountRate.length-1])//SUMPRODUCT($D$6:$D$154,$E$6:$E$154)
+         //=SUMPRODUCT($D$6:$D$154,$E$6:$E$154);
+
+          $scope.NetNPV = 0;
+
+         for(var i=0; i<$scope.NetNPVArray.length; i++){
+           $scope.NetNPV += $scope.NetNPVArray[i];
+         }
+         console.log("$scope.NetNPV ==>", $scope.NetNPV)
+         //console.log("$scope.NetNPVArray ==>  ", $scope.NetNPVArray);
+         //console.log("$scope.RemainingBalance2 ==>" , $scope.RemainingBalance2)
+         //console.log($scope.afterTaxSallaryMember2AryExpectedCashYear)
+
+         //console.log("$scope.maleTablePx05 ==> ",$scope.femaleTablePx05.length)
+         //console.log("$scope.maleTablePx05 ==> ",$scope.femaleTablePx05)
+        //  console.log("$scope.maleTableCondtionalSurvivalProb ==> ", $scope.femaleTableCondtionalSurvivalProb.length)
+         //console.log("$scope.maleTableCondtionalSurvivalProb ==> ", $scope.femaleTableCondtionalSurvivalProb)
+
+         console.log("year ", $scope.year);
+         console.log("InflationAry ", $scope.InflationAry)
+         console.log("member1AgeAry", $scope.member1AgeAry)
+         console.log("grossSalleryMember1Ary ", $scope.grossSalleryMember1Ary)
+         console.log("afterTaxSallaryMember1Ary ", $scope.afterTaxSallaryMember1Ary)
+         console.log("member2AgeAry  ", $scope.member2AgeAry)
+         console.log("grossSalleryMember2Ary  ", $scope.grossSalleryMember2Ary)
+         console.log("afterTaxSallaryMember2Ary  ", $scope.afterTaxSallaryMember2Ary)
+         console.log("InvestmentIncome  ", $scope.InvestmentIncome)
+         console.log("RentalIncome  ", $scope.RentalIncome)
+         console.log("otherIncome  ", $scope.otherIncome)
+         console.log("EstimatedLivingCost ", $scope.EstimatedLivingCost )
+         console.log("CreditCardLiability  ", $scope.CreditCardLiability)
+         console.log("Loan1Repayment  ", $scope.Loan1Repayment)
+         console.log("Loan2Repayment  ", $scope.Loan2Repayment)
+         console.log("RemainingBalance  ", $scope.RemainingBalance)
+         console.log("afterTaxSallaryMember1AryExpectedCashYear  ",  $scope.afterTaxSallaryMember1AryExpectedCashYear)
+         console.log("afterTaxSallaryMember2AryExpectedCashYear  ", $scope.afterTaxSallaryMember2AryExpectedCashYear)
+         console.log("RemainingBalance2  ",  $scope.RemainingBalance2)
+         console.log("femaleTableCondtionalSurvivalProb  ", $scope.femaleTableCondtionalSurvivalProb)
+         console.log("femaleTablePx05  ", $scope.femaleTablePx05)
+         console.log("maleTablePx05  ", $scope.maleTablePx05)
+         console.log("outputYear  ", $scope.outputYear)
+         console.log("cashInflow   ", $scope.cashInflow )
+         console.log("cashOutflow  ==> ", $scope.cashOutflow)
+         console.log("surplus  ", $scope.surplus)
+         console.log('discountRate  ', $scope.discountRate);
+
+         LineChartService.createChart($scope.outputYear,$scope.cashOutflow, $scope.surplus);
+      }else {
+            $("#myModal").modal('show');
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+        }
 
 
 
-    //console.log($scope.NetNPV)
-    //console.log(  $scope.surplus, $scope.discountRate,   $scope.surplus[0], $scope.discountRate[0])
-    //console.log("year => ",$scope.year);
-    //console.log("Inflation => ", $scope.InflationAry);
-    //console.log("member1 age array => ", $scope.member1AgeAry)
-    //console.log("gross sallary member 1 array => ", $scope.grossSalleryMember1Ary)
-    //console.log("after tax sallry member 1 => ", $scope.afterTaxSallaryMember1Ary)
-    //console.log("memeber 2 age array => ",  $scope.member2AgeAry);
-    //console.log($scope.afterTaxSallaryMember1AryExpectedCashYear);
-    //console.log($scope.afterTaxSallaryMember1AryExpectedCashYear);
-    //console.log($scope.femaleTablePx05);
-    //console.log($scope.afterTaxSallaryMember2AryExpectedCashYear);
-    //console.log("$scope.RemainingBalance2 =>  ",$scope.RemainingBalance2);
-    //console.log($scope.outputYear);
+      }
+
+    $scope.calculateFinal(true);
+
+    //download click
+    document.getElementById("download").addEventListener("click", function() {
+        if ($scope.forms.ttrForm.$valid) {
+            var normalDetails = {
+                firstName: $scope.personalDetails.firstName,
+                lastName: $scope.personalDetails.lastName,
+                email: $scope.personalDetails.email,
+                mobile: $scope.personalDetails.mobile,
+                postalCode: $scope.personalDetails.postalCode,
+                initialInvestmentAmount: Number($scope.initialInvestmentAmount.replaceAll('$', '').replaceAll(',', '')),
+            }
+
+            PdfMaker.createChart(normalDetails);
+        } else {
+            $("#myModal").modal('show');
+        }
+    });
+
+    //print section
+
+    $(".print-doc").on("click", printAllCharts);
+
+    function printAllCharts() {
+
+        if ($scope.forms.ttrForm.$valid) {
+
+            var printUpdate = function() {
+                $('#container').highcharts().reflow();
+            };
+
+
+              document.getElementById("container").style.display = "block";
+              //document.getElementById("containerB").style.display = "block";
+
+              if (window.matchMedia) {
+                  var mediaQueryList = window.matchMedia('print');
+                  mediaQueryList.addListener(function(mql) {
+                      printUpdate();
+                  });
+              }
+              window.print();
+              
+
+        } else {
+            $("#myModal").modal('show');
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+        }
+    };
 
 
 

@@ -41,6 +41,15 @@
 {
   clear: both;
 }
+.margin-btn0{
+	margin-bottom: 0 !important;
+}
+.padding-btn0{
+	padding-bottom: 0 !important;
+}
+.marginTop20{
+	margin-top: 20px;
+}
 .title{
     padding: 11px 0px;
     position: relative;
@@ -151,6 +160,7 @@ i.fa-floppy-o{
 .title-div{
   background: #0d2f47 !important;
 padding: 5px !important;
+margin-bottom: 15px;
 }
 .amount-header{
     font-size: 12px;
