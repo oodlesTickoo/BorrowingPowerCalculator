@@ -66,8 +66,8 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
             */
 
     var initDate = new Date();
-    initDate.setYear(1989);
-    initDate.setMonth(6);
+    initDate.setYear(1977);
+    initDate.setMonth(3);
     initDate.setDate(1);
     $scope.dob = initDate;
     $scope.firstDP = function() {
@@ -159,6 +159,7 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     $scope.fy = dt.getMonth() > 5 ? dt.getFullYear() : dt.getFullYear() - 1;
 
     $scope.age = AgeCalculator.getAge($scope.dob, $scope.fy);
+
 
 
 
@@ -1165,7 +1166,7 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
 
     $scope.loan_term = 20,
     $scope.Inflation = 2.50,
-    $scope.member1Age = 40,
+    //$scope.member1Age = 40,
     $scope.YourAnnualTaxableIncome = 127892.014851933,
     $scope.lowerBond = [0, 18201, 37001 ,80001 , 180001],
     $scope.taxRate = [0, 0.19, 0.325, 0.37, 0.45 ];
@@ -1407,6 +1408,7 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
 /***********************************************************
              slider range and input
 ************************************************************/
+/*
     var initialInvestmentAmountNewSlider = document.getElementById("initialInvestmentAmountNewSlider");
     var initialInvestmentAmountNewInput = document.getElementById("initialInvestmentAmountNewInput");
     //$scope.initialInvestmentAmountNew=$scope.member1Age;
@@ -1435,6 +1437,7 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
     initialInvestmentAmountNewInput.addEventListener("change", function() {
         initialInvestmentAmountNewSlider.noUiSlider.set(initialInvestmentAmountNewInput.value);
     });
+    */
 
     //slider-2 input-2
     var slider2 = document.getElementById("slider2");
@@ -1979,7 +1982,7 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
       if (isValid) {
         var EstimatedInterestRate = $scope.EstimatedInterestRate.replaceAll('%', '');
         var Inflation = $scope.Inflation.replaceAll('%', '');
-        var member1Age = $scope.member1Age.replaceAll('%', '');
+        //var member1Age = $scope.age.replaceAll('%', '');
         var SalaryExcludeTaxAndSuperPerYearMember1 = $scope.SalaryExcludeTaxAndSuperPerYearMember1.replaceAll('$', '').replaceAll(',', '');
         var SalaryExcludeTaxAndSuperPerYearMember2 = $scope.SalaryExcludeTaxAndSuperPerYearMember2.replaceAll('$', '').replaceAll(',', '');
         var InvestmentIncomePerYear = $scope.InvestmentIncomePerYear.replaceAll('$', '').replaceAll(',', '');
@@ -2008,7 +2011,7 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
              $scope.InflationAry[i] = Math.pow((1+(Inflation/100)), (i+1-1));
 
              //member 1 age
-             $scope.member1AgeAry[i] = (Number(member1Age) + i+1) - 1;
+             $scope.member1AgeAry[i] = (Number($scope.age) + i+1) - 1;
 
              //member 1 gross sallary and member 1 after tax sallary
              if($scope.member1AgeAry[i]>65){
@@ -2249,7 +2252,7 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
                   });
               }
               window.print();
-              
+
 
         } else {
             $("#myModal").modal('show');

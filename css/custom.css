@@ -803,7 +803,7 @@ float:right;
 }
 
 
-///////////////////////
+
 
 
 
@@ -850,9 +850,7 @@ float:right;
     display : inline-block !important;
     float:right !important;
   }
-  .second-row-mobile{
-    margin-top:-20px;
-  }
+
 }
 
 
@@ -1076,12 +1074,12 @@ hr.children-hr{
 .form-group label{
   font-weight:normal;
 }
-p.err-msg{
+p.err-msg{.second-row-mobile
   margin:5px 0 0;
   color:darkolivegreen;
 }
 .btn-primary,.btn-primary:hover,.btn-primary:focus{
-  background-color: #91B6BE !important;
+  /*background-color: #91B6BE !important;*/
   border:1px solid #ddd;
   outline: none !important;
   border-radius:0px;
