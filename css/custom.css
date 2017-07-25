@@ -1151,7 +1151,7 @@ input:-webkit-autofill {
 }
 
 select{
-	display: block;
+
 color: #555;
 border: 1px solid #ccc;
 	    border-radius: 4px;
@@ -1166,4 +1166,24 @@ height: 26px;
 padding: 5px 6px !important;
 margin-top: 4px;
 
+}
+.linetop{
+  border-top:1px solid #ccc;
+  padding-top: 13px !important;
+}
+.mySelect{
+	margin-left: 7px;
+}
+.padngBtn25{
+	padding-bottom: 25px !important;
+}
+.innerSelectBox{
+	    padding-left: 13px;
+}
+.marginTop14{
+	margin-top: 14px;
+}
+.margin-btn5{
+	margin-bottom: 5px;
+	display: block;
 }
