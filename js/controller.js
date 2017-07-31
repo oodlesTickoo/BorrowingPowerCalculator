@@ -1,69 +1,69 @@
-app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMaker', 'LineChartService', 'taxRateCalculate', function($scope, $timeout, AgeCalculator, PdfMaker, LineChartService, taxRateCalculate) {
+app.controller("validationModalController",["$scope","$uibModalInstance","BPCForm",function($scope, $uibModalInstance, BPCForm){
+   var $ctrl = this;
+    $ctrl.BPCForm = BPCForm;
+    $ctrl.cancel = function () {
+      $uibModalInstance.dismiss('cancel');
+    };
+}])
 
-  $scope.infoShow = function(value) {
-      if (value) {
-          document.getElementsByClassName("information-overlay")[0].style.visibility = "visible";
-          document.getElementsByClassName("information-overlay")[0].style.zIndex = "9999";
-          document.getElementsByClassName("information-overlay")[0].style.position = "inline-block";
-          document.getElementsByClassName("information-overlay")[0].style.height = "" + (document.getElementsByClassName("otrp-calculator")[0].clientHeight - 10) + "px";
-      } else {
-          document.getElementsByClassName("information-overlay")[0].style.visibility = "hidden";
-      }
-  }
+app.controller("calculatorInfoContoller",["$scope","$uibModalInstance","BPCForm",function($scope, $uibModalInstance, BPCForm){
+   var $ctrlInfo = this;
+    $ctrlInfo.BPCForm = BPCForm;
+    $ctrlInfo.cancel = function () {
+      $uibModalInstance.dismiss('cancel');
+    };
+}])
 
-  /**
-    String.prototype.replaceAll = function(search, replacement) {
-        var target = this;
-        return target.split(search).join(replacement);
+
+
+app.controller("BPCController", ['$scope', '$uibModal', '$timeout', 'AgeCalculator', 'PdfMaker', 'LineChartService', 'taxRateCalculate', function($scope, $uibModal, $timeout, AgeCalculator, PdfMaker, LineChartService, taxRateCalculate) {
+
+
+  $scope.openValidationModal = function () {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        ariaLabelledBy: 'modal-title',
+        ariaDescribedBy: 'modal-body',
+        templateUrl: 'validationModal.html',
+        controller: 'validationModalController',
+        controllerAs: '$ctrl',
+        size: 'md',
+        resolve: {
+          BPCForm: function () {
+            return $scope.forms.BPCForm;
+          }
+        }
+      });
+
+      modalInstance.result.then(function () {
+      }, function () {
+        console.log('Modal dismissed at: ' + new Date());
+      });
     };
 
+    //calculator information
+    $scope.calculatorInfoModal = function () {
+        var modalInstance = $uibModal.open({
+          animation: true,
+          ariaLabelledBy: 'modal-title',
+          ariaDescribedBy: 'modal-body',
+          templateUrl: 'calculatorInfoPage.html',
+          controller: 'calculatorInfoContoller',
+          controllerAs: '$ctrlInfo',
+          size: 'md',
+          resolve: {
+            BPCForm: function () {
+              return $scope.forms.BPCForm;
+            }
+          }
+        });
 
+        modalInstance.result.then(function () {
+        }, function () {
+          console.log('Modal dismissed at: ' + new Date());
+        });
 
-    $scope.personalDetails = {};
-    $scope.forms = {};
-
-    $scope.personalDetails = {
-        firstName : "Amit",
-        lastName : "Kumar",
-        email : "iamitkrs@gmail.com",
-        mobile: 412121212,
-        postalCode : 1234
-    };
-
-    $scope.totalPercentageSelected=100;
-
-    $scope.australianShares1 = 10;
-    $scope.internationalShares1 = 10;
-    $scope.internationalSharesHedged1 = 10;
-    $scope.usShares1 = 10;
-    $scope.australianBonds1 = 10;
-    $scope.internationalBondsHedged1 = 10;
-    $scope.cash1 = 10;
-    $scope.australianListedProperty1 = 10;
-    $scope.internationalListedProperty1 = 20;
-
-    $scope.asset1Total = $scope.australianShares1 + $scope.internationalShares1 +
-            $scope.internationalSharesHedged1 + $scope.usShares1 +
-            $scope.australianBonds1 + $scope.internationalBondsHedged1 +
-            $scope.cash1 + $scope.australianListedProperty1 +
-            $scope.internationalListedProperty1+"%";
-
-    $scope.australianShares2 = 10;
-    $scope.internationalShares2 = 10;
-    $scope.internationalSharesHedged2 = 10;
-    $scope.usShares2 = 10;
-    $scope.australianBonds2 = 10;
-    $scope.internationalBondsHedged2 = 10;
-    $scope.cash2 = 10;
-    $scope.australianListedProperty2 = 10;
-    $scope.internationalListedProperty2 = 20;
-
-    $scope.asset2Total = $scope.australianShares2 + $scope.internationalShares2 +
-            $scope.internationalSharesHedged2 + $scope.usShares2 +
-            $scope.australianBonds2 + $scope.internationalBondsHedged2 +
-            $scope.cash2 + $scope.australianListedProperty2 +
-            $scope.internationalListedProperty2+"%";
-            */
+      };
 
     var initDate = new Date();
     initDate.setYear(1977);
@@ -448,36 +448,6 @@ app.controller("TTRController", ['$scope', '$timeout', 'AgeCalculator', 'PdfMake
 /***********************************************************
              slider range and input
 ************************************************************/
-/*
-    var initialInvestmentAmountNewSlider = document.getElementById("initialInvestmentAmountNewSlider");
-    var initialInvestmentAmountNewInput = document.getElementById("initialInvestmentAmountNewInput");
-    //$scope.initialInvestmentAmountNew=$scope.member1Age;
-    noUiSlider.create(initialInvestmentAmountNewSlider, {
-        start: $scope.member1Age,
-        range: {
-            min: [1],
-            max: [100]
-        },
-        format: wNumb({
-            decimals: 0,
-            thousand: ','
-        }),
-        connect: 'lower'
-    });
-
-    initialInvestmentAmountNewSlider.noUiSlider.on('update', function(values, handle) {
-        initialInvestmentAmountNewInput.value = values[handle];
-        $scope.member1Age = values[handle];
-    });
-    initialInvestmentAmountNewSlider.noUiSlider.on('set', function(values, handle) {
-        initialInvestmentAmountNewInput.value = values[handle];
-        $scope.member1Age = values[handle];
-    });
-
-    initialInvestmentAmountNewInput.addEventListener("change", function() {
-        initialInvestmentAmountNewSlider.noUiSlider.set(initialInvestmentAmountNewInput.value);
-    });
-    */
 
     //slider-2 input-2
     var slider2 = document.getElementById("slider2");
@@ -1431,7 +1401,8 @@ $scope.paymentFrequencyText = "Net Income Per Week";
 
          LineChartService.createChart($scope.outputYear,$scope.cashOutflow, $scope.surplus);
       }else {
-            $("#myModal").modal('show');
+        $scope.openValidationModal();
+            //$("#myModal").modal('show');
             $("html, body").animate({ scrollTop: 0 }, "slow");
         }
 
@@ -1445,7 +1416,7 @@ $scope.paymentFrequencyText = "Net Income Per Week";
 
     //download click
     document.getElementById("download").addEventListener("click", function() {
-        if ($scope.forms.ttrForm.$valid) {
+        if ($scope.forms.BPCForm.$valid) {
             var normalDetails = {
                 firstName: $scope.personalDetails.firstName,
                 lastName: $scope.personalDetails.lastName,
@@ -1457,7 +1428,8 @@ $scope.paymentFrequencyText = "Net Income Per Week";
 
             PdfMaker.createChart(normalDetails);
         } else {
-            $("#myModal").modal('show');
+          $scope.openValidationModal();
+            //$("#myModal").modal('show');
         }
     });
 
@@ -1467,7 +1439,7 @@ $scope.paymentFrequencyText = "Net Income Per Week";
 
     function printAllCharts() {
 
-        if ($scope.forms.ttrForm.$valid) {
+        if ($scope.forms.BPCForm.$valid) {
 
             var printUpdate = function() {
                 $('#container').highcharts().reflow();
@@ -1484,14 +1456,10 @@ $scope.paymentFrequencyText = "Net Income Per Week";
                   });
               }
               window.print();
-
-
         } else {
-            $("#myModal").modal('show');
+          $scope.openValidationModal();
+            //$("#myModal").modal('show');
             $("html, body").animate({ scrollTop: 0 }, "slow");
         }
     };
-
-
-
 }]);

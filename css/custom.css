@@ -1187,3 +1187,9 @@ margin-top: 4px;
 	margin-bottom: 5px;
 	display: block;
 }
+.infoHeader h2{
+	color: #333333;
+}
+.infoBody{
+	color: #333;
+}
