@@ -35,7 +35,7 @@ app.controller("BPCController", ['$scope', '$uibModal', '$timeout', 'AgeCalculat
 
       modalInstance.result.then(function () {
       }, function () {
-        console.log('Modal dismissed at: ' + new Date());
+        console.log('else condition in modal');
       });
     };
 
@@ -58,7 +58,7 @@ app.controller("BPCController", ['$scope', '$uibModal', '$timeout', 'AgeCalculat
 
         modalInstance.result.then(function () {
         }, function () {
-          console.log('Modal dismissed at: ' + new Date());
+            console.log('else condition in modal');
         });
 
       };
@@ -956,39 +956,6 @@ $scope.paymentFrequencyText = "Net Income Per Week";
     input16.addEventListener("change", function() {
         slider16.noUiSlider.set(input16.value);
     });
-
-
-
-    //slider-18 input-18
-    /*
-    var slider18 = document.getElementById("slider18");
-    var input18 = document.getElementById("input18");
-
-    //$scope.IntialVal18 =$scope.NumberOfDependents;
-    noUiSlider.create(slider18, {
-        start: $scope.NumberOfDependents,
-        range: {
-          min: [0],
-          max: [3]
-        },
-        format: wNumb({
-            decimals: 0,
-            thousand: ','
-        }),
-        connect: 'lower'
-    });
-    slider18.noUiSlider.on('update', function(values, handle) {
-        input18.value = values[handle];
-        $scope.NumberOfDependents = values[handle];
-    });
-    slider18.noUiSlider.on('set', function(values, handle) {
-        input18.value = values[handle];
-        $scope.NumberOfDependents = values[handle];
-    });
-    input18.addEventListener("change", function() {
-        slider18.noUiSlider.set(input18.value);
-    });
-    **/
 
     //slider-19 input-19
     var slider19 = document.getElementById("slider19");
