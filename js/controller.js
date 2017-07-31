@@ -14,8 +14,6 @@ app.controller("calculatorInfoContoller",["$scope","$uibModalInstance","BPCForm"
     };
 }])
 
-
-
 app.controller("BPCController", ['$scope', '$uibModal', '$timeout', 'AgeCalculator', 'PdfMaker', 'LineChartService', 'taxRateCalculate', function($scope, $uibModal, $timeout, AgeCalculator, PdfMaker, LineChartService, taxRateCalculate) {
 
 
@@ -1022,43 +1020,6 @@ $scope.paymentFrequencyText = "Net Income Per Week";
         slider19.noUiSlider.set(input19.value);
     });
 
-
-
-
-
-
-    //slider-20 input-20
-    /**
-    var slider20 = document.getElementById("slider20");
-    var input20 = document.getElementById("input20");
-
-    //$scope.IntialVal5 =$scope.SalaryExcludeTaxAndSuperPerYearMember1;
-    noUiSlider.create(slider20, {
-        start: $scope.spauseSalary,
-        range: {
-            min: [1000],
-            max: [1000000]
-        },
-        format: wNumb({
-            decimals: 2,
-            prefix: '$',
-            thousand: ','
-        }),
-        connect: 'lower'
-    });
-    slider20.noUiSlider.on('update', function(values, handle) {
-        input20.value = values[handle];
-        $scope.spauseSalary = values[handle];
-    });
-    slider20.noUiSlider.on('set', function(values, handle) {
-        input20.value = values[handle];
-        $scope.spauseSalary = values[handle];
-    });
-    input20.addEventListener("change", function() {
-        slider20.noUiSlider.set(input20.value);
-    });
-    **/
-
     //slider-21 input-21
     var slider21 = document.getElementById("slider21");
     var input21 = document.getElementById("input21");
@@ -1186,11 +1147,6 @@ $scope.paymentFrequencyText = "Net Income Per Week";
         var OtherIncomePerYear = $scope.OtherIncomePerYear.replaceAll('$', '').replaceAll(',', '');
         var CreditCardOutstandingBalance = $scope.CreditCardOutstandingBalance.replaceAll('$', '').replaceAll(',', '');
 
-
-
-
-
-
          //for loop for 109 values;
          for(var j=0; j<=109; j++){
            $scope.femaleTableCondtionalSurvivalProb[j+1] =  $scope.femaleTableCondtionalSurvivalProb[j]*$scope.femaleTablePXColomn[j];//true
@@ -1280,8 +1236,6 @@ $scope.paymentFrequencyText = "Net Income Per Week";
              //Remaining balance
              $scope.RemainingBalance[i] = $scope.afterTaxSallaryMember1Ary[i]+$scope.afterTaxSallaryMember2Ary[i]+$scope.InvestmentIncome[i]+$scope.RentalIncome[i]+$scope.otherIncome[i]-$scope.EstimatedLivingCost[i]-$scope.CreditCardLiability[i]-$scope.Loan1Repayment[i]-$scope.Loan2Repayment[i];
 
-
-
              //after Tax Sallary Member 1 Expected Cash flow Year
              if($scope.GenderOfMember1 == "Female"){
                //VLOOKUP($Projection.E4,$'Female life table'.$A$2:$K$111,11,0),
@@ -1300,8 +1254,6 @@ $scope.paymentFrequencyText = "Net Income Per Week";
              }
 
              $scope.afterTaxSallaryMember1AryExpectedCashYear[i] = $scope.afterTaxSallaryMember1Ary[i]*(finalVal1/finalVal2);
-
-
 
              //after Tax Sallary Member 2 Expected Cash flow Year
              if($scope.GenderOfMember2 == "Female"){
@@ -1349,8 +1301,6 @@ $scope.paymentFrequencyText = "Net Income Per Week";
 
 
          };
-
-
 
 
          //$scope.NetNPV = ($scope.surplus[0]*$scope.discountRate[0])+($scope.surplus[$scope.surplus.length-1]*$scope.discountRate[$scope.discountRate.length-1])//SUMPRODUCT($D$6:$D$154,$E$6:$E$154)
